@@ -1298,16 +1298,16 @@
         }
 
         function compareAsc(columnName, a, b) {
-            var aParsed = parseFloat(a[columnName].replace(',', '.')) || 0;
-            var bParsed = parseFloat(b[columnName].replace(',', '.')) || 0;
+            aParsed = getFloatFromString(a[columnName]);
+            bParsed = getFloatFromString(b[columnName]);
             if (aParsed < bParsed) return -1;
             if (aParsed > bParsed) return 1;
             return 0;
         }
 
         function compareDesc(columnName, a, b) {
-            var aParsed = parseFloat(a[columnName].replace(',', '.')) || 0;
-            var bParsed = parseFloat(b[columnName].replace(',', '.')) || 0;
+            aParsed = getFloatFromString(a[columnName]);
+            bParsed = getFloatFromString(b[columnName]);
             if (aParsed < bParsed) return 1;
             if (aParsed > bParsed) return -1;
             return 0;
@@ -1325,6 +1325,9 @@
             return 0;
         }
 
+        function getFloatFromString(str){
+            return parseFloat(str.replace(',', '.').replace(' ', '')) || 0;
+        }
         //******************************************************************
         renderStockList(stockList);
     })();
