@@ -33,11 +33,16 @@
     
     th:after {
         content: '\2039';
-        /*\203A*/
         transform: rotate(90deg);
         position: absolute;
         right: 10px;
         display: inline-block;
+    }
+    th.time{
+        background:#ddd;
+    }
+    th.time:after {
+        content: '';
     }
     
     .active {
@@ -46,11 +51,20 @@
     
     th.desc:after {
         content: '\2039';
-        /*\203A*/
         transform: rotate(-90deg);
         position: absolute;
         right: 10px;
         display: inline-block;
+    }
+    td{
+        padding:6px;
+        text-align: right;
+    }
+    td:first-child{
+        text-align: left;
+    }
+    td:last-child{
+        text-align: center;
     }
     </style>
 </head>
@@ -1205,6 +1219,9 @@
             var tr = document.createElement('tr');
             thNames.forEach(function(thName, idx, thList) {
                 var th = document.createElement('th');
+                if(thName === 'Time'){
+                    th.classList.add('time');
+                }
                 if (markColumn) {
                     if (markColumn === thName) {
                         th.classList.add('active');
@@ -1300,19 +1317,6 @@
 
         //******************************************************************
         renderStockList(stockList);
-
-        // setTimeout(function() {
-        //     var descSortedList = getSortedList(stockList, 'Instrument', false);
-        //     renderStockList(descSortedList);
-
-        //     setTimeout(function() {
-        //         var ascSortedList = getSortedList(stockList, 'Instrument');
-        //         renderStockList(ascSortedList);
-        //     }, 4000);
-
-        // }, 4000);
-
-
     })();
     </script>
 </body>
