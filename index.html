@@ -1213,7 +1213,17 @@
 
         function renderStockList(list, markColumn) {
             var element = document.querySelector('stocklist');
+            
+            //Clear whole table content in 2 ways
+            var startTime = new Date();
+            // 1.
             element.innerHTML = '';
+            // 2.
+            //while(element.firstChild) element.removeChild(element.firstChild);
+            var endTime = new Date();
+            console.log('Clearing table took: ', endTime - startTime);
+            //END: Clear whole table content in 2 ways
+
             var t = document.createElement('table');
             var thNames = Object.keys(list[0]);
             var tr = document.createElement('tr');
