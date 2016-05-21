@@ -23,9 +23,34 @@
     }
     
     th {
+        position: relative;
         font-weight: bold;
         cursor: pointer;
         background: #E2BDB8;
+        padding: 10px;
+        min-width: 80px;
+    }
+    
+    th:after {
+        content: '\2039';
+        /*\203A*/
+        transform: rotate(90deg);
+        position: absolute;
+        right: 10px;
+        display: inline-block;
+    }
+    
+    .active {
+        background: #A7837E;
+    }
+    
+    th.desc:after {
+        content: '\2039';
+        /*\203A*/
+        transform: rotate(-90deg);
+        position: absolute;
+        right: 10px;
+        display: inline-block;
     }
     </style>
 </head>
@@ -34,1248 +59,1258 @@
     <h1>Tabeller, sortering etc.</h1>
     <stocklist></stocklist>
     <script>
-    (function(){
+    (function() {
 
-    var stockList = [{
-        "Instrument": "AAK",
-        "Pct": "0,33",
-        "Change": "2,00",
-        "Buy": "606,50",
-        "Sell": "607,00",
-        "LastPaid": "606,50",
-        "Highest": "610,50",
-        "Lowest": "603,50",
-        "Volume": "37 198",
-        "Time": "16:59"
-    }, {
-        "Instrument": "ABB",
-        "Pct": "1,13",
-        "Change": "1,90",
-        "Buy": "170,30",
-        "Sell": "170,50",
-        "LastPaid": "170,30",
-        "Highest": "170,70",
-        "Lowest": "168,70",
-        "Volume": "977 578",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Alfa Laval",
-        "Pct": "1,77",
-        "Change": "2,20",
-        "Buy": "126,40",
-        "Sell": "126,50",
-        "LastPaid": "126,50",
-        "Highest": "126,60",
-        "Lowest": "125,00",
-        "Volume": "761 918",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Assa Abloy B",
-        "Pct": "1,69",
-        "Change": "2,80",
-        "Buy": "168,00",
-        "Sell": "168,10",
-        "LastPaid": "168,10",
-        "Highest": "169,00",
-        "Lowest": "166,50",
-        "Volume": "1 150 287",
-        "Time": "17:00"
-    }, {
-        "Instrument": "AstraZeneca",
-        "Pct": "1,55",
-        "Change": "7,30",
-        "Buy": "477,20",
-        "Sell": "477,40",
-        "LastPaid": "477,40",
-        "Highest": "478,60",
-        "Lowest": "471,60",
-        "Volume": "325 824",
-        "Time": "17:01"
-    }, {
-        "Instrument": "Atlas Copco A",
-        "Pct": "2,22",
-        "Change": "4,60",
-        "Buy": "211,60",
-        "Sell": "211,80",
-        "LastPaid": "211,70",
-        "Highest": "212,50",
-        "Lowest": "209,00",
-        "Volume": "1 426 068",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Atlas Copco B",
-        "Pct": "1,67",
-        "Change": "3,20",
-        "Buy": "194,90",
-        "Sell": "195,10",
-        "LastPaid": "195,00",
-        "Highest": "196,10",
-        "Lowest": "193,20",
-        "Volume": "434 877",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Atrium Ljungberg B",
-        "Pct": "-0,44",
-        "Change": "-0,60",
-        "Buy": "135,60",
-        "Sell": "135,90",
-        "LastPaid": "135,90",
-        "Highest": "136,40",
-        "Lowest": "134,90",
-        "Volume": "8 140",
-        "Time": "16:58"
-    }, {
-        "Instrument": "Autoliv SDB",
-        "Pct": "1,00",
-        "Change": "10,00",
-        "Buy": "1 006,00",
-        "Sell": "1 007,00",
-        "LastPaid": "1 007,00",
-        "Highest": "1 008,00",
-        "Lowest": "998,00",
-        "Volume": "62 147",
-        "Time": "17:01"
-    }, {
-        "Instrument": "Axfood",
-        "Pct": "-0,07",
-        "Change": "-0,10",
-        "Buy": "147,10",
-        "Sell": "147,20",
-        "LastPaid": "147,10",
-        "Highest": "148,10",
-        "Lowest": "146,50",
-        "Volume": "113 737",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Axis",
-        "Pct": "-0,06",
-        "Change": "-0,20",
-        "Buy": "331,90",
-        "Sell": "332,50",
-        "LastPaid": "331,90",
-        "Highest": "333,70",
-        "Lowest": "331,10",
-        "Volume": "548",
-        "Time": "16:28"
-    }, {
-        "Instrument": "Balder B",
-        "Pct": "0,87",
-        "Change": "1,80",
-        "Buy": "208,70",
-        "Sell": "208,80",
-        "LastPaid": "208,80",
-        "Highest": "209,40",
-        "Lowest": "207,10",
-        "Volume": "140 141",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Balder Pref",
-        "Pct": "0,34",
-        "Change": "1,10",
-        "Buy": "319,60",
-        "Sell": "321,20",
-        "LastPaid": "320,00",
-        "Highest": "321,50",
-        "Lowest": "318,90",
-        "Volume": "16 334",
-        "Time": "16:48"
-    }, {
-        "Instrument": "Betsson B",
-        "Pct": "2,09",
-        "Change": "2,30",
-        "Buy": "112,10",
-        "Sell": "112,30",
-        "LastPaid": "112,20",
-        "Highest": "112,50",
-        "Lowest": "110,20",
-        "Volume": "368 603",
-        "Time": "17:00"
-    }, {
-        "Instrument": "BillerudKorsnäs",
-        "Pct": "1,66",
-        "Change": "2,00",
-        "Buy": "122,70",
-        "Sell": "122,80",
-        "LastPaid": "122,70",
-        "Highest": "122,80",
-        "Lowest": "121,00",
-        "Volume": "228 594",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Boliden",
-        "Pct": "1,79",
-        "Change": "2,50",
-        "Buy": "141,90",
-        "Sell": "142,00",
-        "LastPaid": "141,90",
-        "Highest": "143,80",
-        "Lowest": "140,10",
-        "Volume": "2 792 465",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Castellum",
-        "Pct": "1,27",
-        "Change": "1,60",
-        "Buy": "127,90",
-        "Sell": "128,00",
-        "LastPaid": "127,90",
-        "Highest": "128,00",
-        "Lowest": "126,70",
-        "Volume": "247 179",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Com Hem Holding",
-        "Pct": "1,61",
-        "Change": "1,15",
-        "Buy": "72,35",
-        "Sell": "72,45",
-        "LastPaid": "72,40",
-        "Highest": "72,95",
-        "Lowest": "69,80",
-        "Volume": "96 486",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Dometic Group",
-        "Pct": "0,37",
-        "Change": "0,20",
-        "Buy": "54,45",
-        "Sell": "54,75",
-        "LastPaid": "54,50",
-        "Highest": "54,90",
-        "Lowest": "54,05",
-        "Volume": "110 844",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Electrolux A",
-        "Pct": "-1,65",
-        "Change": "-4,00",
-        "Buy": "232,10",
-        "Sell": "239,60",
-        "LastPaid": "238,80",
-        "Highest": "242,70",
-        "Lowest": "229,50",
-        "Volume": "63",
-        "Time": "16:14"
-    }, {
-        "Instrument": "Electrolux B",
-        "Pct": "1,35",
-        "Change": "2,90",
-        "Buy": "217,60",
-        "Sell": "217,70",
-        "LastPaid": "217,70",
-        "Highest": "219,70",
-        "Lowest": "215,50",
-        "Volume": "515 305",
-        "Time": "17:01"
-    }, {
-        "Instrument": "Elekta B",
-        "Pct": "1,18",
-        "Change": "0,75",
-        "Buy": "64,35",
-        "Sell": "64,40",
-        "LastPaid": "64,35",
-        "Highest": "64,50",
-        "Lowest": "63,55",
-        "Volume": "792 079",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Ericsson A",
-        "Pct": "1,01",
-        "Change": "0,65",
-        "Buy": "64,70",
-        "Sell": "65,10",
-        "LastPaid": "64,95",
-        "Highest": "64,95",
-        "Lowest": "64,15",
-        "Volume": "8 925",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Ericsson B",
-        "Pct": "1,60",
-        "Change": "1,00",
-        "Buy": "63,40",
-        "Sell": "63,45",
-        "LastPaid": "63,45",
-        "Highest": "63,50",
-        "Lowest": "62,35",
-        "Volume": "5 495 874",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Fabege",
-        "Pct": "0,37",
-        "Change": "0,50",
-        "Buy": "136,40",
-        "Sell": "136,60",
-        "LastPaid": "136,50",
-        "Highest": "136,60",
-        "Lowest": "135,60",
-        "Volume": "100 747",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Fingerprint Cards B",
-        "Pct": "2,48",
-        "Change": "13,00",
-        "Buy": "536,00",
-        "Sell": "536,50",
-        "LastPaid": "536,50",
-        "Highest": "539,00",
-        "Lowest": "517,50",
-        "Volume": "957 179",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Getinge B",
-        "Pct": "1,90",
-        "Change": "3,20",
-        "Buy": "171,90",
-        "Sell": "172,00",
-        "LastPaid": "171,90",
-        "Highest": "172,00",
-        "Lowest": "170,00",
-        "Volume": "275 570",
-        "Time": "17:00"
-    }, {
-        "Instrument": "H&M B",
-        "Pct": "0,66",
-        "Change": "1,70",
-        "Buy": "257,40",
-        "Sell": "257,50",
-        "LastPaid": "257,50",
-        "Highest": "259,20",
-        "Lowest": "256,40",
-        "Volume": "2 208 311",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Handelsbanken A",
-        "Pct": "0,98",
-        "Change": "1,00",
-        "Buy": "103,40",
-        "Sell": "103,50",
-        "LastPaid": "103,50",
-        "Highest": "104,00",
-        "Lowest": "103,10",
-        "Volume": "1 916 392",
-        "Time": "17:01"
-    }, {
-        "Instrument": "Handelsbanken B",
-        "Pct": "1,21",
-        "Change": "1,30",
-        "Buy": "108,40",
-        "Sell": "108,60",
-        "LastPaid": "109,00",
-        "Highest": "109,70",
-        "Lowest": "107,70",
-        "Volume": "26 438",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Hexagon B",
-        "Pct": "1,22",
-        "Change": "3,80",
-        "Buy": "314,40",
-        "Sell": "314,50",
-        "LastPaid": "314,40",
-        "Highest": "315,40",
-        "Lowest": "311,40",
-        "Volume": "281 223",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Hexpol B",
-        "Pct": "1,10",
-        "Change": "0,90",
-        "Buy": "82,95",
-        "Sell": "83,05",
-        "LastPaid": "83,00",
-        "Highest": "83,30",
-        "Lowest": "81,60",
-        "Volume": "300 254",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Holmen A",
-        "Pct": "0,22",
-        "Change": "0,60",
-        "Buy": "275,00",
-        "Sell": "278,10",
-        "LastPaid": "275,50",
-        "Highest": "275,50",
-        "Lowest": "271,70",
-        "Volume": "803",
-        "Time": "16:42"
-    }, {
-        "Instrument": "Holmen B",
-        "Pct": "1,81",
-        "Change": "4,90",
-        "Buy": "275,50",
-        "Sell": "275,90",
-        "LastPaid": "275,60",
-        "Highest": "278,00",
-        "Lowest": "270,40",
-        "Volume": "88 504",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Hufvudstaden A",
-        "Pct": "0,64",
-        "Change": "0,80",
-        "Buy": "126,40",
-        "Sell": "126,50",
-        "LastPaid": "126,40",
-        "Highest": "127,00",
-        "Lowest": "126,00",
-        "Volume": "64 356",
-        "Time": "16:58"
-    }, {
-        "Instrument": "Hufvudstaden C",
-        "Pct": "",
-        "Change": "",
-        "Buy": "205,10",
-        "Sell": "",
-        "LastPaid": "",
-        "Highest": "",
-        "Lowest": "",
-        "Volume": "",
-        "Time": "09:00"
-    }, {
-        "Instrument": "Husqvarna A",
-        "Pct": "0,38",
-        "Change": "0,25",
-        "Buy": "65,25",
-        "Sell": "65,30",
-        "LastPaid": "65,25",
-        "Highest": "65,55",
-        "Lowest": "64,75",
-        "Volume": "5 430",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Husqvarna B",
-        "Pct": "0,46",
-        "Change": "0,30",
-        "Buy": "65,25",
-        "Sell": "65,30",
-        "LastPaid": "65,25",
-        "Highest": "65,60",
-        "Lowest": "64,60",
-        "Volume": "1 623 216",
-        "Time": "17:00"
-    }, {
-        "Instrument": "ICA Gruppen",
-        "Pct": "1,72",
-        "Change": "4,70",
-        "Buy": "278,00",
-        "Sell": "278,10",
-        "LastPaid": "278,00",
-        "Highest": "278,40",
-        "Lowest": "274,30",
-        "Volume": "256 550",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Industrivärden A",
-        "Pct": "0,40",
-        "Change": "0,60",
-        "Buy": "151,80",
-        "Sell": "151,90",
-        "LastPaid": "151,80",
-        "Highest": "152,80",
-        "Lowest": "151,70",
-        "Volume": "59 361",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Industrivärden C",
-        "Pct": "0,36",
-        "Change": "0,50",
-        "Buy": "137,80",
-        "Sell": "138,00",
-        "LastPaid": "138,00",
-        "Highest": "139,20",
-        "Lowest": "137,70",
-        "Volume": "209 789",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Indutrade",
-        "Pct": "1,61",
-        "Change": "7,60",
-        "Buy": "480,60",
-        "Sell": "480,90",
-        "LastPaid": "480,60",
-        "Highest": "482,50",
-        "Lowest": "473,00",
-        "Volume": "32 035",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Intrum Justitia",
-        "Pct": "0,45",
-        "Change": "1,30",
-        "Buy": "291,50",
-        "Sell": "291,80",
-        "LastPaid": "291,70",
-        "Highest": "292,40",
-        "Lowest": "289,50",
-        "Volume": "99 391",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Investor A",
-        "Pct": "1,21",
-        "Change": "3,30",
-        "Buy": "275,30",
-        "Sell": "275,60",
-        "LastPaid": "275,30",
-        "Highest": "276,40",
-        "Lowest": "272,90",
-        "Volume": "45 641",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Investor B",
-        "Pct": "1,46",
-        "Change": "4,00",
-        "Buy": "278,80",
-        "Sell": "279,00",
-        "LastPaid": "278,90",
-        "Highest": "280,00",
-        "Lowest": "276,60",
-        "Volume": "634 008",
-        "Time": "17:01"
-    }, {
-        "Instrument": "JM",
-        "Pct": "1,11",
-        "Change": "2,60",
-        "Buy": "236,60",
-        "Sell": "236,90",
-        "LastPaid": "236,80",
-        "Highest": "237,10",
-        "Lowest": "234,80",
-        "Volume": "181 323",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Kinnevik A",
-        "Pct": "1,51",
-        "Change": "3,90",
-        "Buy": "259,90",
-        "Sell": "261,90",
-        "LastPaid": "261,90",
-        "Highest": "263,40",
-        "Lowest": "260,00",
-        "Volume": "975",
-        "Time": "16:57"
-    }, {
-        "Instrument": "Kinnevik B",
-        "Pct": "0,18",
-        "Change": "0,40",
-        "Buy": "222,40",
-        "Sell": "222,50",
-        "LastPaid": "222,50",
-        "Highest": "225,60",
-        "Lowest": "222,10",
-        "Volume": "597 088",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Klövern A",
-        "Pct": "-0,79",
-        "Change": "-0,07",
-        "Buy": "9,40",
-        "Sell": "9,42",
-        "LastPaid": "9,43",
-        "Highest": "9,50",
-        "Lowest": "9,22",
-        "Volume": "31 322",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Klövern B",
-        "Pct": "-0,58",
-        "Change": "-0,06",
-        "Buy": "9,40",
-        "Sell": "9,41",
-        "LastPaid": "9,41",
-        "Highest": "9,53",
-        "Lowest": "9,33",
-        "Volume": "238 057",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Klövern pref",
-        "Pct": "-0,07",
-        "Change": "-0,20",
-        "Buy": "284,70",
-        "Sell": "284,80",
-        "LastPaid": "284,70",
-        "Highest": "285,70",
-        "Lowest": "284,30",
-        "Volume": "30 914",
-        "Time": "16:55"
-    }, {
-        "Instrument": "Latour B",
-        "Pct": "0,93",
-        "Change": "3,20",
-        "Buy": "347,10",
-        "Sell": "347,90",
-        "LastPaid": "347,50",
-        "Highest": "348,00",
-        "Lowest": "343,00",
-        "Volume": "40 472",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Lifco B",
-        "Pct": "0,77",
-        "Change": "1,80",
-        "Buy": "236,90",
-        "Sell": "237,50",
-        "LastPaid": "237,00",
-        "Highest": "244,10",
-        "Lowest": "235,50",
-        "Volume": "23 418",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Loomis B",
-        "Pct": "3,12",
-        "Change": "6,40",
-        "Buy": "211,20",
-        "Sell": "211,40",
-        "LastPaid": "211,30",
-        "Highest": "212,00",
-        "Lowest": "203,70",
-        "Volume": "131 508",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Lundberg B",
-        "Pct": "0,78",
-        "Change": "3,50",
-        "Buy": "451,50",
-        "Sell": "452,00",
-        "LastPaid": "452,00",
-        "Highest": "455,10",
-        "Lowest": "448,80",
-        "Volume": "16 205",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Lundin Mining Corporation SDB",
-        "Pct": "3,55",
-        "Change": "0,90",
-        "Buy": "26,26",
-        "Sell": "26,33",
-        "LastPaid": "26,26",
-        "Highest": "26,41",
-        "Lowest": "25,81",
-        "Volume": "1 590 237",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Lundin Petroleum",
-        "Pct": "1,82",
-        "Change": "2,70",
-        "Buy": "151,30",
-        "Sell": "151,50",
-        "LastPaid": "151,40",
-        "Highest": "153,00",
-        "Lowest": "150,30",
-        "Volume": "617 635",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Meda A",
-        "Pct": "0,14",
-        "Change": "0,20",
-        "Buy": "148,20",
-        "Sell": "148,40",
-        "LastPaid": "148,30",
-        "Highest": "149,00",
-        "Lowest": "147,80",
-        "Volume": "124 139",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Melker Schörling",
-        "Pct": "1,59",
-        "Change": "8,50",
-        "Buy": "541,00",
-        "Sell": "543,00",
-        "LastPaid": "542,50",
-        "Highest": "548,00",
-        "Lowest": "534,00",
-        "Volume": "18 470",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Millicom International..",
-        "Pct": "1,37",
-        "Change": "6,20",
-        "Buy": "460,20",
-        "Sell": "460,70",
-        "LastPaid": "460,30",
-        "Highest": "470,40",
-        "Lowest": "460,00",
-        "Volume": "103 452",
-        "Time": "16:59"
-    }, {
-        "Instrument": "MTG A",
-        "Pct": "1,87",
-        "Change": "4,50",
-        "Buy": "241,30",
-        "Sell": "246,10",
-        "LastPaid": "245,30",
-        "Highest": "245,30",
-        "Lowest": "241,10",
-        "Volume": "32",
-        "Time": "16:59"
-    }, {
-        "Instrument": "MTG B",
-        "Pct": "1,48",
-        "Change": "3,50",
-        "Buy": "239,50",
-        "Sell": "239,80",
-        "LastPaid": "239,70",
-        "Highest": "240,40",
-        "Lowest": "236,70",
-        "Volume": "90 521",
-        "Time": "17:01"
-    }, {
-        "Instrument": "NCC A",
-        "Pct": "1,94",
-        "Change": "5,60",
-        "Buy": "293,30",
-        "Sell": "293,90",
-        "LastPaid": "293,60",
-        "Highest": "293,80",
-        "Lowest": "289,10",
-        "Volume": "4 632",
-        "Time": "17:00"
-    }, {
-        "Instrument": "NCC B",
-        "Pct": "2,19",
-        "Change": "6,30",
-        "Buy": "293,60",
-        "Sell": "293,80",
-        "LastPaid": "293,80",
-        "Highest": "294,60",
-        "Lowest": "288,90",
-        "Volume": "487 649",
-        "Time": "17:00"
-    }, {
-        "Instrument": "NetEnt AB ser. B",
-        "Pct": "2,86",
-        "Change": "2,40",
-        "Buy": "86,20",
-        "Sell": "86,25",
-        "LastPaid": "86,25",
-        "Highest": "86,40",
-        "Lowest": "84,00",
-        "Volume": "230 905",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Nibe Industrier B",
-        "Pct": "0,80",
-        "Change": "2,30",
-        "Buy": "291,50",
-        "Sell": "291,60",
-        "LastPaid": "291,50",
-        "Highest": "292,80",
-        "Lowest": "289,00",
-        "Volume": "49 283",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Nobia",
-        "Pct": "0,83",
-        "Change": "0,70",
-        "Buy": "85,00",
-        "Sell": "85,10",
-        "LastPaid": "85,00",
-        "Highest": "85,50",
-        "Lowest": "84,05",
-        "Volume": "90 578",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Nordea Bank",
-        "Pct": "1,49",
-        "Change": "1,15",
-        "Buy": "78,10",
-        "Sell": "78,15",
-        "LastPaid": "78,10",
-        "Highest": "78,50",
-        "Lowest": "77,50",
-        "Volume": "4 292 656",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Pandox B",
-        "Pct": "0,38",
-        "Change": "0,50",
-        "Buy": "132,20",
-        "Sell": "132,70",
-        "LastPaid": "132,60",
-        "Highest": "133,20",
-        "Lowest": "131,40",
-        "Volume": "41 502",
-        "Time": "16:57"
-    }, {
-        "Instrument": "Peab B",
-        "Pct": "1,50",
-        "Change": "1,00",
-        "Buy": "67,45",
-        "Sell": "67,50",
-        "LastPaid": "67,50",
-        "Highest": "67,80",
-        "Lowest": "67,00",
-        "Volume": "176 632",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Ratos A",
-        "Pct": "-0,63",
-        "Change": "-0,35",
-        "Buy": "54,80",
-        "Sell": "55,45",
-        "LastPaid": "55,00",
-        "Highest": "55,90",
-        "Lowest": "54,00",
-        "Volume": "3 191",
-        "Time": "16:21"
-    }, {
-        "Instrument": "Ratos AB pref",
-        "Pct": "0,00",
-        "Change": "0,00",
-        "Buy": "1 878,00",
-        "Sell": "1 883,00",
-        "LastPaid": "1 885,00",
-        "Highest": "1 888,00",
-        "Lowest": "1 878,00",
-        "Volume": "568",
-        "Time": "16:45"
-    }, {
-        "Instrument": "Ratos B",
-        "Pct": "0,59",
-        "Change": "0,26",
-        "Buy": "44,34",
-        "Sell": "44,41",
-        "LastPaid": "44,37",
-        "Highest": "44,71",
-        "Lowest": "44,01",
-        "Volume": "441 755",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Resurs Holding",
-        "Pct": "0,45",
-        "Change": "0,25",
-        "Buy": "55,80",
-        "Sell": "55,90",
-        "LastPaid": "55,90",
-        "Highest": "56,00",
-        "Lowest": "55,50",
-        "Volume": "68 624",
-        "Time": "16:59"
-    }, {
-        "Instrument": "SAAB B",
-        "Pct": "1,86",
-        "Change": "5,20",
-        "Buy": "284,00",
-        "Sell": "284,20",
-        "LastPaid": "284,20",
-        "Highest": "284,50",
-        "Lowest": "279,10",
-        "Volume": "138 313",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Sandvik",
-        "Pct": "2,27",
-        "Change": "1,85",
-        "Buy": "83,45",
-        "Sell": "83,50",
-        "LastPaid": "83,45",
-        "Highest": "83,90",
-        "Lowest": "82,30",
-        "Volume": "3 278 802",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SCA A",
-        "Pct": "1,40",
-        "Change": "3,60",
-        "Buy": "259,70",
-        "Sell": "260,00",
-        "LastPaid": "259,90",
-        "Highest": "260,10",
-        "Lowest": "257,00",
-        "Volume": "8 805",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SCA B",
-        "Pct": "1,76",
-        "Change": "4,50",
-        "Buy": "259,70",
-        "Sell": "259,80",
-        "LastPaid": "259,70",
-        "Highest": "260,40",
-        "Lowest": "257,80",
-        "Volume": "871 724",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SEB A",
-        "Pct": "1,20",
-        "Change": "0,90",
-        "Buy": "76,20",
-        "Sell": "76,25",
-        "LastPaid": "76,20",
-        "Highest": "76,70",
-        "Lowest": "75,95",
-        "Volume": "4 690 624",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SEB C",
-        "Pct": "0,12",
-        "Change": "0,10",
-        "Buy": "81,30",
-        "Sell": "81,45",
-        "LastPaid": "81,30",
-        "Highest": "82,40",
-        "Lowest": "80,45",
-        "Volume": "18 213",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Securitas B",
-        "Pct": "1,91",
-        "Change": "2,40",
-        "Buy": "127,90",
-        "Sell": "128,00",
-        "LastPaid": "128,00",
-        "Highest": "128,30",
-        "Lowest": "126,40",
-        "Volume": "598 657",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Skanska B",
-        "Pct": "1,97",
-        "Change": "3,40",
-        "Buy": "176,10",
-        "Sell": "176,20",
-        "LastPaid": "176,20",
-        "Highest": "176,40",
-        "Lowest": "174,00",
-        "Volume": "854 960",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SKF A",
-        "Pct": "3,39",
-        "Change": "4,90",
-        "Buy": "148,90",
-        "Sell": "149,40",
-        "LastPaid": "149,50",
-        "Highest": "149,50",
-        "Lowest": "145,10",
-        "Volume": "2 449",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SKF B",
-        "Pct": "3,25",
-        "Change": "4,70",
-        "Buy": "149,00",
-        "Sell": "149,10",
-        "LastPaid": "149,10",
-        "Highest": "149,40",
-        "Lowest": "145,20",
-        "Volume": "1 732 228",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SSAB A",
-        "Pct": "-0,17",
-        "Change": "-0,05",
-        "Buy": "29,26",
-        "Sell": "29,28",
-        "LastPaid": "29,26",
-        "Highest": "29,85",
-        "Lowest": "29,12",
-        "Volume": "2 985 538",
-        "Time": "17:00"
-    }, {
-        "Instrument": "SSAB B",
-        "Pct": "-1,17",
-        "Change": "-0,28",
-        "Buy": "23,69",
-        "Sell": "23,76",
-        "LastPaid": "23,72",
-        "Highest": "24,30",
-        "Lowest": "23,58",
-        "Volume": "950 271",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Stora Enso A",
-        "Pct": "-0,94",
-        "Change": "-0,70",
-        "Buy": "72,65",
-        "Sell": "74,00",
-        "LastPaid": "74,00",
-        "Highest": "75,00",
-        "Lowest": "72,25",
-        "Volume": "3 255",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Stora Enso R",
-        "Pct": "1,26",
-        "Change": "0,85",
-        "Buy": "68,15",
-        "Sell": "68,25",
-        "LastPaid": "68,20",
-        "Highest": "68,45",
-        "Lowest": "67,70",
-        "Volume": "518 974",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Sweco A",
-        "Pct": "-4,93",
-        "Change": "-6,80",
-        "Buy": "131,30",
-        "Sell": "137,50",
-        "LastPaid": "131,10",
-        "Highest": "137,90",
-        "Lowest": "131,10",
-        "Volume": "1 043",
-        "Time": "16:53"
-    }, {
-        "Instrument": "Sweco B",
-        "Pct": "0,92",
-        "Change": "1,20",
-        "Buy": "130,90",
-        "Sell": "131,00",
-        "LastPaid": "131,00",
-        "Highest": "131,10",
-        "Lowest": "130,70",
-        "Volume": "210 859",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Swedbank A",
-        "Pct": "0,93",
-        "Change": "1,60",
-        "Buy": "174,10",
-        "Sell": "174,20",
-        "LastPaid": "174,10",
-        "Highest": "174,80",
-        "Lowest": "173,50",
-        "Volume": "1 824 385",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Swedish Match",
-        "Pct": "0,81",
-        "Change": "2,20",
-        "Buy": "274,40",
-        "Sell": "274,50",
-        "LastPaid": "274,50",
-        "Highest": "275,60",
-        "Lowest": "273,60",
-        "Volume": "401 232",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Swedish Orphan Biovitrum",
-        "Pct": "5,04",
-        "Change": "5,40",
-        "Buy": "112,30",
-        "Sell": "112,50",
-        "LastPaid": "112,50",
-        "Highest": "112,50",
-        "Lowest": "107,50",
-        "Volume": "1 027 237",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Tele2 A",
-        "Pct": "0,46",
-        "Change": "0,40",
-        "Buy": "86,50",
-        "Sell": "87,05",
-        "LastPaid": "87,05",
-        "Highest": "88,35",
-        "Lowest": "85,45",
-        "Volume": "8 257",
-        "Time": "16:57"
-    }, {
-        "Instrument": "Tele2 B",
-        "Pct": "2,04",
-        "Change": "1,60",
-        "Buy": "79,90",
-        "Sell": "79,95",
-        "LastPaid": "79,95",
-        "Highest": "80,00",
-        "Lowest": "79,00",
-        "Volume": "2 375 560",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Telia Company",
-        "Pct": "1,91",
-        "Change": "0,72",
-        "Buy": "38,36",
-        "Sell": "38,38",
-        "LastPaid": "38,38",
-        "Highest": "38,50",
-        "Lowest": "37,97",
-        "Volume": "8 158 143",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Tieto",
-        "Pct": "1,39",
-        "Change": "3,00",
-        "Buy": "218,40",
-        "Sell": "219,10",
-        "LastPaid": "219,40",
-        "Highest": "219,40",
-        "Lowest": "217,60",
-        "Volume": "979",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Trelleborg B",
-        "Pct": "0,86",
-        "Change": "1,30",
-        "Buy": "153,00",
-        "Sell": "153,10",
-        "LastPaid": "153,10",
-        "Highest": "153,80",
-        "Lowest": "152,30",
-        "Volume": "199 677",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Unibet Group",
-        "Pct": "0,86",
-        "Change": "0,80",
-        "Buy": "94,05",
-        "Sell": "94,20",
-        "LastPaid": "94,15",
-        "Highest": "94,70",
-        "Lowest": "93,20",
-        "Volume": "345 844",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Volvo A",
-        "Pct": "0,33",
-        "Change": "0,30",
-        "Buy": "90,65",
-        "Sell": "90,70",
-        "LastPaid": "90,65",
-        "Highest": "91,05",
-        "Lowest": "88,35",
-        "Volume": "216 880",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Volvo B",
-        "Pct": "0,22",
-        "Change": "0,20",
-        "Buy": "90,70",
-        "Sell": "90,75",
-        "LastPaid": "90,70",
-        "Highest": "91,15",
-        "Lowest": "88,30",
-        "Volume": "8 779 541",
-        "Time": "17:00"
-    }, {
-        "Instrument": "Wallenstam B",
-        "Pct": "0,73",
-        "Change": "0,50",
-        "Buy": "68,65",
-        "Sell": "68,70",
-        "LastPaid": "68,65",
-        "Highest": "68,90",
-        "Lowest": "68,00",
-        "Volume": "150 428",
-        "Time": "16:59"
-    }, {
-        "Instrument": "Wihlborgs Fastigheter",
-        "Pct": "0,93",
-        "Change": "1,50",
-        "Buy": "163,40",
-        "Sell": "163,60",
-        "LastPaid": "163,50",
-        "Highest": "163,60",
-        "Lowest": "162,00",
-        "Volume": "58 064",
-        "Time": "16:5"
-    }];
-    var sortOrderStates = {};
+        var stockList = [{
+            "Instrument": "AAK",
+            "Pct": "0,33",
+            "Change": "2,00",
+            "Buy": "606,50",
+            "Sell": "607,00",
+            "LastPaid": "606,50",
+            "Highest": "610,50",
+            "Lowest": "603,50",
+            "Volume": "37 198",
+            "Time": "16:59"
+        }, {
+            "Instrument": "ABB",
+            "Pct": "1,13",
+            "Change": "1,90",
+            "Buy": "170,30",
+            "Sell": "170,50",
+            "LastPaid": "170,30",
+            "Highest": "170,70",
+            "Lowest": "168,70",
+            "Volume": "977 578",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Alfa Laval",
+            "Pct": "1,77",
+            "Change": "2,20",
+            "Buy": "126,40",
+            "Sell": "126,50",
+            "LastPaid": "126,50",
+            "Highest": "126,60",
+            "Lowest": "125,00",
+            "Volume": "761 918",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Assa Abloy B",
+            "Pct": "1,69",
+            "Change": "2,80",
+            "Buy": "168,00",
+            "Sell": "168,10",
+            "LastPaid": "168,10",
+            "Highest": "169,00",
+            "Lowest": "166,50",
+            "Volume": "1 150 287",
+            "Time": "17:00"
+        }, {
+            "Instrument": "AstraZeneca",
+            "Pct": "1,55",
+            "Change": "7,30",
+            "Buy": "477,20",
+            "Sell": "477,40",
+            "LastPaid": "477,40",
+            "Highest": "478,60",
+            "Lowest": "471,60",
+            "Volume": "325 824",
+            "Time": "17:01"
+        }, {
+            "Instrument": "Atlas Copco A",
+            "Pct": "2,22",
+            "Change": "4,60",
+            "Buy": "211,60",
+            "Sell": "211,80",
+            "LastPaid": "211,70",
+            "Highest": "212,50",
+            "Lowest": "209,00",
+            "Volume": "1 426 068",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Atlas Copco B",
+            "Pct": "1,67",
+            "Change": "3,20",
+            "Buy": "194,90",
+            "Sell": "195,10",
+            "LastPaid": "195,00",
+            "Highest": "196,10",
+            "Lowest": "193,20",
+            "Volume": "434 877",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Atrium Ljungberg B",
+            "Pct": "-0,44",
+            "Change": "-0,60",
+            "Buy": "135,60",
+            "Sell": "135,90",
+            "LastPaid": "135,90",
+            "Highest": "136,40",
+            "Lowest": "134,90",
+            "Volume": "8 140",
+            "Time": "16:58"
+        }, {
+            "Instrument": "Autoliv SDB",
+            "Pct": "1,00",
+            "Change": "10,00",
+            "Buy": "1 006,00",
+            "Sell": "1 007,00",
+            "LastPaid": "1 007,00",
+            "Highest": "1 008,00",
+            "Lowest": "998,00",
+            "Volume": "62 147",
+            "Time": "17:01"
+        }, {
+            "Instrument": "Axfood",
+            "Pct": "-0,07",
+            "Change": "-0,10",
+            "Buy": "147,10",
+            "Sell": "147,20",
+            "LastPaid": "147,10",
+            "Highest": "148,10",
+            "Lowest": "146,50",
+            "Volume": "113 737",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Axis",
+            "Pct": "-0,06",
+            "Change": "-0,20",
+            "Buy": "331,90",
+            "Sell": "332,50",
+            "LastPaid": "331,90",
+            "Highest": "333,70",
+            "Lowest": "331,10",
+            "Volume": "548",
+            "Time": "16:28"
+        }, {
+            "Instrument": "Balder B",
+            "Pct": "0,87",
+            "Change": "1,80",
+            "Buy": "208,70",
+            "Sell": "208,80",
+            "LastPaid": "208,80",
+            "Highest": "209,40",
+            "Lowest": "207,10",
+            "Volume": "140 141",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Balder Pref",
+            "Pct": "0,34",
+            "Change": "1,10",
+            "Buy": "319,60",
+            "Sell": "321,20",
+            "LastPaid": "320,00",
+            "Highest": "321,50",
+            "Lowest": "318,90",
+            "Volume": "16 334",
+            "Time": "16:48"
+        }, {
+            "Instrument": "Betsson B",
+            "Pct": "2,09",
+            "Change": "2,30",
+            "Buy": "112,10",
+            "Sell": "112,30",
+            "LastPaid": "112,20",
+            "Highest": "112,50",
+            "Lowest": "110,20",
+            "Volume": "368 603",
+            "Time": "17:00"
+        }, {
+            "Instrument": "BillerudKorsnäs",
+            "Pct": "1,66",
+            "Change": "2,00",
+            "Buy": "122,70",
+            "Sell": "122,80",
+            "LastPaid": "122,70",
+            "Highest": "122,80",
+            "Lowest": "121,00",
+            "Volume": "228 594",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Boliden",
+            "Pct": "1,79",
+            "Change": "2,50",
+            "Buy": "141,90",
+            "Sell": "142,00",
+            "LastPaid": "141,90",
+            "Highest": "143,80",
+            "Lowest": "140,10",
+            "Volume": "2 792 465",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Castellum",
+            "Pct": "1,27",
+            "Change": "1,60",
+            "Buy": "127,90",
+            "Sell": "128,00",
+            "LastPaid": "127,90",
+            "Highest": "128,00",
+            "Lowest": "126,70",
+            "Volume": "247 179",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Com Hem Holding",
+            "Pct": "1,61",
+            "Change": "1,15",
+            "Buy": "72,35",
+            "Sell": "72,45",
+            "LastPaid": "72,40",
+            "Highest": "72,95",
+            "Lowest": "69,80",
+            "Volume": "96 486",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Dometic Group",
+            "Pct": "0,37",
+            "Change": "0,20",
+            "Buy": "54,45",
+            "Sell": "54,75",
+            "LastPaid": "54,50",
+            "Highest": "54,90",
+            "Lowest": "54,05",
+            "Volume": "110 844",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Electrolux A",
+            "Pct": "-1,65",
+            "Change": "-4,00",
+            "Buy": "232,10",
+            "Sell": "239,60",
+            "LastPaid": "238,80",
+            "Highest": "242,70",
+            "Lowest": "229,50",
+            "Volume": "63",
+            "Time": "16:14"
+        }, {
+            "Instrument": "Electrolux B",
+            "Pct": "1,35",
+            "Change": "2,90",
+            "Buy": "217,60",
+            "Sell": "217,70",
+            "LastPaid": "217,70",
+            "Highest": "219,70",
+            "Lowest": "215,50",
+            "Volume": "515 305",
+            "Time": "17:01"
+        }, {
+            "Instrument": "Elekta B",
+            "Pct": "1,18",
+            "Change": "0,75",
+            "Buy": "64,35",
+            "Sell": "64,40",
+            "LastPaid": "64,35",
+            "Highest": "64,50",
+            "Lowest": "63,55",
+            "Volume": "792 079",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Ericsson A",
+            "Pct": "1,01",
+            "Change": "0,65",
+            "Buy": "64,70",
+            "Sell": "65,10",
+            "LastPaid": "64,95",
+            "Highest": "64,95",
+            "Lowest": "64,15",
+            "Volume": "8 925",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Ericsson B",
+            "Pct": "1,60",
+            "Change": "1,00",
+            "Buy": "63,40",
+            "Sell": "63,45",
+            "LastPaid": "63,45",
+            "Highest": "63,50",
+            "Lowest": "62,35",
+            "Volume": "5 495 874",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Fabege",
+            "Pct": "0,37",
+            "Change": "0,50",
+            "Buy": "136,40",
+            "Sell": "136,60",
+            "LastPaid": "136,50",
+            "Highest": "136,60",
+            "Lowest": "135,60",
+            "Volume": "100 747",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Fingerprint Cards B",
+            "Pct": "2,48",
+            "Change": "13,00",
+            "Buy": "536,00",
+            "Sell": "536,50",
+            "LastPaid": "536,50",
+            "Highest": "539,00",
+            "Lowest": "517,50",
+            "Volume": "957 179",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Getinge B",
+            "Pct": "1,90",
+            "Change": "3,20",
+            "Buy": "171,90",
+            "Sell": "172,00",
+            "LastPaid": "171,90",
+            "Highest": "172,00",
+            "Lowest": "170,00",
+            "Volume": "275 570",
+            "Time": "17:00"
+        }, {
+            "Instrument": "H&M B",
+            "Pct": "0,66",
+            "Change": "1,70",
+            "Buy": "257,40",
+            "Sell": "257,50",
+            "LastPaid": "257,50",
+            "Highest": "259,20",
+            "Lowest": "256,40",
+            "Volume": "2 208 311",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Handelsbanken A",
+            "Pct": "0,98",
+            "Change": "1,00",
+            "Buy": "103,40",
+            "Sell": "103,50",
+            "LastPaid": "103,50",
+            "Highest": "104,00",
+            "Lowest": "103,10",
+            "Volume": "1 916 392",
+            "Time": "17:01"
+        }, {
+            "Instrument": "Handelsbanken B",
+            "Pct": "1,21",
+            "Change": "1,30",
+            "Buy": "108,40",
+            "Sell": "108,60",
+            "LastPaid": "109,00",
+            "Highest": "109,70",
+            "Lowest": "107,70",
+            "Volume": "26 438",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Hexagon B",
+            "Pct": "1,22",
+            "Change": "3,80",
+            "Buy": "314,40",
+            "Sell": "314,50",
+            "LastPaid": "314,40",
+            "Highest": "315,40",
+            "Lowest": "311,40",
+            "Volume": "281 223",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Hexpol B",
+            "Pct": "1,10",
+            "Change": "0,90",
+            "Buy": "82,95",
+            "Sell": "83,05",
+            "LastPaid": "83,00",
+            "Highest": "83,30",
+            "Lowest": "81,60",
+            "Volume": "300 254",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Holmen A",
+            "Pct": "0,22",
+            "Change": "0,60",
+            "Buy": "275,00",
+            "Sell": "278,10",
+            "LastPaid": "275,50",
+            "Highest": "275,50",
+            "Lowest": "271,70",
+            "Volume": "803",
+            "Time": "16:42"
+        }, {
+            "Instrument": "Holmen B",
+            "Pct": "1,81",
+            "Change": "4,90",
+            "Buy": "275,50",
+            "Sell": "275,90",
+            "LastPaid": "275,60",
+            "Highest": "278,00",
+            "Lowest": "270,40",
+            "Volume": "88 504",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Hufvudstaden A",
+            "Pct": "0,64",
+            "Change": "0,80",
+            "Buy": "126,40",
+            "Sell": "126,50",
+            "LastPaid": "126,40",
+            "Highest": "127,00",
+            "Lowest": "126,00",
+            "Volume": "64 356",
+            "Time": "16:58"
+        }, {
+            "Instrument": "Hufvudstaden C",
+            "Pct": "",
+            "Change": "",
+            "Buy": "205,10",
+            "Sell": "",
+            "LastPaid": "",
+            "Highest": "",
+            "Lowest": "",
+            "Volume": "",
+            "Time": "09:00"
+        }, {
+            "Instrument": "Husqvarna A",
+            "Pct": "0,38",
+            "Change": "0,25",
+            "Buy": "65,25",
+            "Sell": "65,30",
+            "LastPaid": "65,25",
+            "Highest": "65,55",
+            "Lowest": "64,75",
+            "Volume": "5 430",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Husqvarna B",
+            "Pct": "0,46",
+            "Change": "0,30",
+            "Buy": "65,25",
+            "Sell": "65,30",
+            "LastPaid": "65,25",
+            "Highest": "65,60",
+            "Lowest": "64,60",
+            "Volume": "1 623 216",
+            "Time": "17:00"
+        }, {
+            "Instrument": "ICA Gruppen",
+            "Pct": "1,72",
+            "Change": "4,70",
+            "Buy": "278,00",
+            "Sell": "278,10",
+            "LastPaid": "278,00",
+            "Highest": "278,40",
+            "Lowest": "274,30",
+            "Volume": "256 550",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Industrivärden A",
+            "Pct": "0,40",
+            "Change": "0,60",
+            "Buy": "151,80",
+            "Sell": "151,90",
+            "LastPaid": "151,80",
+            "Highest": "152,80",
+            "Lowest": "151,70",
+            "Volume": "59 361",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Industrivärden C",
+            "Pct": "0,36",
+            "Change": "0,50",
+            "Buy": "137,80",
+            "Sell": "138,00",
+            "LastPaid": "138,00",
+            "Highest": "139,20",
+            "Lowest": "137,70",
+            "Volume": "209 789",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Indutrade",
+            "Pct": "1,61",
+            "Change": "7,60",
+            "Buy": "480,60",
+            "Sell": "480,90",
+            "LastPaid": "480,60",
+            "Highest": "482,50",
+            "Lowest": "473,00",
+            "Volume": "32 035",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Intrum Justitia",
+            "Pct": "0,45",
+            "Change": "1,30",
+            "Buy": "291,50",
+            "Sell": "291,80",
+            "LastPaid": "291,70",
+            "Highest": "292,40",
+            "Lowest": "289,50",
+            "Volume": "99 391",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Investor A",
+            "Pct": "1,21",
+            "Change": "3,30",
+            "Buy": "275,30",
+            "Sell": "275,60",
+            "LastPaid": "275,30",
+            "Highest": "276,40",
+            "Lowest": "272,90",
+            "Volume": "45 641",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Investor B",
+            "Pct": "1,46",
+            "Change": "4,00",
+            "Buy": "278,80",
+            "Sell": "279,00",
+            "LastPaid": "278,90",
+            "Highest": "280,00",
+            "Lowest": "276,60",
+            "Volume": "634 008",
+            "Time": "17:01"
+        }, {
+            "Instrument": "JM",
+            "Pct": "1,11",
+            "Change": "2,60",
+            "Buy": "236,60",
+            "Sell": "236,90",
+            "LastPaid": "236,80",
+            "Highest": "237,10",
+            "Lowest": "234,80",
+            "Volume": "181 323",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Kinnevik A",
+            "Pct": "1,51",
+            "Change": "3,90",
+            "Buy": "259,90",
+            "Sell": "261,90",
+            "LastPaid": "261,90",
+            "Highest": "263,40",
+            "Lowest": "260,00",
+            "Volume": "975",
+            "Time": "16:57"
+        }, {
+            "Instrument": "Kinnevik B",
+            "Pct": "0,18",
+            "Change": "0,40",
+            "Buy": "222,40",
+            "Sell": "222,50",
+            "LastPaid": "222,50",
+            "Highest": "225,60",
+            "Lowest": "222,10",
+            "Volume": "597 088",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Klövern A",
+            "Pct": "-0,79",
+            "Change": "-0,07",
+            "Buy": "9,40",
+            "Sell": "9,42",
+            "LastPaid": "9,43",
+            "Highest": "9,50",
+            "Lowest": "9,22",
+            "Volume": "31 322",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Klövern B",
+            "Pct": "-0,58",
+            "Change": "-0,06",
+            "Buy": "9,40",
+            "Sell": "9,41",
+            "LastPaid": "9,41",
+            "Highest": "9,53",
+            "Lowest": "9,33",
+            "Volume": "238 057",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Klövern pref",
+            "Pct": "-0,07",
+            "Change": "-0,20",
+            "Buy": "284,70",
+            "Sell": "284,80",
+            "LastPaid": "284,70",
+            "Highest": "285,70",
+            "Lowest": "284,30",
+            "Volume": "30 914",
+            "Time": "16:55"
+        }, {
+            "Instrument": "Latour B",
+            "Pct": "0,93",
+            "Change": "3,20",
+            "Buy": "347,10",
+            "Sell": "347,90",
+            "LastPaid": "347,50",
+            "Highest": "348,00",
+            "Lowest": "343,00",
+            "Volume": "40 472",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Lifco B",
+            "Pct": "0,77",
+            "Change": "1,80",
+            "Buy": "236,90",
+            "Sell": "237,50",
+            "LastPaid": "237,00",
+            "Highest": "244,10",
+            "Lowest": "235,50",
+            "Volume": "23 418",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Loomis B",
+            "Pct": "3,12",
+            "Change": "6,40",
+            "Buy": "211,20",
+            "Sell": "211,40",
+            "LastPaid": "211,30",
+            "Highest": "212,00",
+            "Lowest": "203,70",
+            "Volume": "131 508",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Lundberg B",
+            "Pct": "0,78",
+            "Change": "3,50",
+            "Buy": "451,50",
+            "Sell": "452,00",
+            "LastPaid": "452,00",
+            "Highest": "455,10",
+            "Lowest": "448,80",
+            "Volume": "16 205",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Lundin Mining Corporation SDB",
+            "Pct": "3,55",
+            "Change": "0,90",
+            "Buy": "26,26",
+            "Sell": "26,33",
+            "LastPaid": "26,26",
+            "Highest": "26,41",
+            "Lowest": "25,81",
+            "Volume": "1 590 237",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Lundin Petroleum",
+            "Pct": "1,82",
+            "Change": "2,70",
+            "Buy": "151,30",
+            "Sell": "151,50",
+            "LastPaid": "151,40",
+            "Highest": "153,00",
+            "Lowest": "150,30",
+            "Volume": "617 635",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Meda A",
+            "Pct": "0,14",
+            "Change": "0,20",
+            "Buy": "148,20",
+            "Sell": "148,40",
+            "LastPaid": "148,30",
+            "Highest": "149,00",
+            "Lowest": "147,80",
+            "Volume": "124 139",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Melker Schörling",
+            "Pct": "1,59",
+            "Change": "8,50",
+            "Buy": "541,00",
+            "Sell": "543,00",
+            "LastPaid": "542,50",
+            "Highest": "548,00",
+            "Lowest": "534,00",
+            "Volume": "18 470",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Millicom International..",
+            "Pct": "1,37",
+            "Change": "6,20",
+            "Buy": "460,20",
+            "Sell": "460,70",
+            "LastPaid": "460,30",
+            "Highest": "470,40",
+            "Lowest": "460,00",
+            "Volume": "103 452",
+            "Time": "16:59"
+        }, {
+            "Instrument": "MTG A",
+            "Pct": "1,87",
+            "Change": "4,50",
+            "Buy": "241,30",
+            "Sell": "246,10",
+            "LastPaid": "245,30",
+            "Highest": "245,30",
+            "Lowest": "241,10",
+            "Volume": "32",
+            "Time": "16:59"
+        }, {
+            "Instrument": "MTG B",
+            "Pct": "1,48",
+            "Change": "3,50",
+            "Buy": "239,50",
+            "Sell": "239,80",
+            "LastPaid": "239,70",
+            "Highest": "240,40",
+            "Lowest": "236,70",
+            "Volume": "90 521",
+            "Time": "17:01"
+        }, {
+            "Instrument": "NCC A",
+            "Pct": "1,94",
+            "Change": "5,60",
+            "Buy": "293,30",
+            "Sell": "293,90",
+            "LastPaid": "293,60",
+            "Highest": "293,80",
+            "Lowest": "289,10",
+            "Volume": "4 632",
+            "Time": "17:00"
+        }, {
+            "Instrument": "NCC B",
+            "Pct": "2,19",
+            "Change": "6,30",
+            "Buy": "293,60",
+            "Sell": "293,80",
+            "LastPaid": "293,80",
+            "Highest": "294,60",
+            "Lowest": "288,90",
+            "Volume": "487 649",
+            "Time": "17:00"
+        }, {
+            "Instrument": "NetEnt AB ser. B",
+            "Pct": "2,86",
+            "Change": "2,40",
+            "Buy": "86,20",
+            "Sell": "86,25",
+            "LastPaid": "86,25",
+            "Highest": "86,40",
+            "Lowest": "84,00",
+            "Volume": "230 905",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Nibe Industrier B",
+            "Pct": "0,80",
+            "Change": "2,30",
+            "Buy": "291,50",
+            "Sell": "291,60",
+            "LastPaid": "291,50",
+            "Highest": "292,80",
+            "Lowest": "289,00",
+            "Volume": "49 283",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Nobia",
+            "Pct": "0,83",
+            "Change": "0,70",
+            "Buy": "85,00",
+            "Sell": "85,10",
+            "LastPaid": "85,00",
+            "Highest": "85,50",
+            "Lowest": "84,05",
+            "Volume": "90 578",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Nordea Bank",
+            "Pct": "1,49",
+            "Change": "1,15",
+            "Buy": "78,10",
+            "Sell": "78,15",
+            "LastPaid": "78,10",
+            "Highest": "78,50",
+            "Lowest": "77,50",
+            "Volume": "4 292 656",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Pandox B",
+            "Pct": "0,38",
+            "Change": "0,50",
+            "Buy": "132,20",
+            "Sell": "132,70",
+            "LastPaid": "132,60",
+            "Highest": "133,20",
+            "Lowest": "131,40",
+            "Volume": "41 502",
+            "Time": "16:57"
+        }, {
+            "Instrument": "Peab B",
+            "Pct": "1,50",
+            "Change": "1,00",
+            "Buy": "67,45",
+            "Sell": "67,50",
+            "LastPaid": "67,50",
+            "Highest": "67,80",
+            "Lowest": "67,00",
+            "Volume": "176 632",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Ratos A",
+            "Pct": "-0,63",
+            "Change": "-0,35",
+            "Buy": "54,80",
+            "Sell": "55,45",
+            "LastPaid": "55,00",
+            "Highest": "55,90",
+            "Lowest": "54,00",
+            "Volume": "3 191",
+            "Time": "16:21"
+        }, {
+            "Instrument": "Ratos AB pref",
+            "Pct": "0,00",
+            "Change": "0,00",
+            "Buy": "1 878,00",
+            "Sell": "1 883,00",
+            "LastPaid": "1 885,00",
+            "Highest": "1 888,00",
+            "Lowest": "1 878,00",
+            "Volume": "568",
+            "Time": "16:45"
+        }, {
+            "Instrument": "Ratos B",
+            "Pct": "0,59",
+            "Change": "0,26",
+            "Buy": "44,34",
+            "Sell": "44,41",
+            "LastPaid": "44,37",
+            "Highest": "44,71",
+            "Lowest": "44,01",
+            "Volume": "441 755",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Resurs Holding",
+            "Pct": "0,45",
+            "Change": "0,25",
+            "Buy": "55,80",
+            "Sell": "55,90",
+            "LastPaid": "55,90",
+            "Highest": "56,00",
+            "Lowest": "55,50",
+            "Volume": "68 624",
+            "Time": "16:59"
+        }, {
+            "Instrument": "SAAB B",
+            "Pct": "1,86",
+            "Change": "5,20",
+            "Buy": "284,00",
+            "Sell": "284,20",
+            "LastPaid": "284,20",
+            "Highest": "284,50",
+            "Lowest": "279,10",
+            "Volume": "138 313",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Sandvik",
+            "Pct": "2,27",
+            "Change": "1,85",
+            "Buy": "83,45",
+            "Sell": "83,50",
+            "LastPaid": "83,45",
+            "Highest": "83,90",
+            "Lowest": "82,30",
+            "Volume": "3 278 802",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SCA A",
+            "Pct": "1,40",
+            "Change": "3,60",
+            "Buy": "259,70",
+            "Sell": "260,00",
+            "LastPaid": "259,90",
+            "Highest": "260,10",
+            "Lowest": "257,00",
+            "Volume": "8 805",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SCA B",
+            "Pct": "1,76",
+            "Change": "4,50",
+            "Buy": "259,70",
+            "Sell": "259,80",
+            "LastPaid": "259,70",
+            "Highest": "260,40",
+            "Lowest": "257,80",
+            "Volume": "871 724",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SEB A",
+            "Pct": "1,20",
+            "Change": "0,90",
+            "Buy": "76,20",
+            "Sell": "76,25",
+            "LastPaid": "76,20",
+            "Highest": "76,70",
+            "Lowest": "75,95",
+            "Volume": "4 690 624",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SEB C",
+            "Pct": "0,12",
+            "Change": "0,10",
+            "Buy": "81,30",
+            "Sell": "81,45",
+            "LastPaid": "81,30",
+            "Highest": "82,40",
+            "Lowest": "80,45",
+            "Volume": "18 213",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Securitas B",
+            "Pct": "1,91",
+            "Change": "2,40",
+            "Buy": "127,90",
+            "Sell": "128,00",
+            "LastPaid": "128,00",
+            "Highest": "128,30",
+            "Lowest": "126,40",
+            "Volume": "598 657",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Skanska B",
+            "Pct": "1,97",
+            "Change": "3,40",
+            "Buy": "176,10",
+            "Sell": "176,20",
+            "LastPaid": "176,20",
+            "Highest": "176,40",
+            "Lowest": "174,00",
+            "Volume": "854 960",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SKF A",
+            "Pct": "3,39",
+            "Change": "4,90",
+            "Buy": "148,90",
+            "Sell": "149,40",
+            "LastPaid": "149,50",
+            "Highest": "149,50",
+            "Lowest": "145,10",
+            "Volume": "2 449",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SKF B",
+            "Pct": "3,25",
+            "Change": "4,70",
+            "Buy": "149,00",
+            "Sell": "149,10",
+            "LastPaid": "149,10",
+            "Highest": "149,40",
+            "Lowest": "145,20",
+            "Volume": "1 732 228",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SSAB A",
+            "Pct": "-0,17",
+            "Change": "-0,05",
+            "Buy": "29,26",
+            "Sell": "29,28",
+            "LastPaid": "29,26",
+            "Highest": "29,85",
+            "Lowest": "29,12",
+            "Volume": "2 985 538",
+            "Time": "17:00"
+        }, {
+            "Instrument": "SSAB B",
+            "Pct": "-1,17",
+            "Change": "-0,28",
+            "Buy": "23,69",
+            "Sell": "23,76",
+            "LastPaid": "23,72",
+            "Highest": "24,30",
+            "Lowest": "23,58",
+            "Volume": "950 271",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Stora Enso A",
+            "Pct": "-0,94",
+            "Change": "-0,70",
+            "Buy": "72,65",
+            "Sell": "74,00",
+            "LastPaid": "74,00",
+            "Highest": "75,00",
+            "Lowest": "72,25",
+            "Volume": "3 255",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Stora Enso R",
+            "Pct": "1,26",
+            "Change": "0,85",
+            "Buy": "68,15",
+            "Sell": "68,25",
+            "LastPaid": "68,20",
+            "Highest": "68,45",
+            "Lowest": "67,70",
+            "Volume": "518 974",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Sweco A",
+            "Pct": "-4,93",
+            "Change": "-6,80",
+            "Buy": "131,30",
+            "Sell": "137,50",
+            "LastPaid": "131,10",
+            "Highest": "137,90",
+            "Lowest": "131,10",
+            "Volume": "1 043",
+            "Time": "16:53"
+        }, {
+            "Instrument": "Sweco B",
+            "Pct": "0,92",
+            "Change": "1,20",
+            "Buy": "130,90",
+            "Sell": "131,00",
+            "LastPaid": "131,00",
+            "Highest": "131,10",
+            "Lowest": "130,70",
+            "Volume": "210 859",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Swedbank A",
+            "Pct": "0,93",
+            "Change": "1,60",
+            "Buy": "174,10",
+            "Sell": "174,20",
+            "LastPaid": "174,10",
+            "Highest": "174,80",
+            "Lowest": "173,50",
+            "Volume": "1 824 385",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Swedish Match",
+            "Pct": "0,81",
+            "Change": "2,20",
+            "Buy": "274,40",
+            "Sell": "274,50",
+            "LastPaid": "274,50",
+            "Highest": "275,60",
+            "Lowest": "273,60",
+            "Volume": "401 232",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Swedish Orphan Biovitrum",
+            "Pct": "5,04",
+            "Change": "5,40",
+            "Buy": "112,30",
+            "Sell": "112,50",
+            "LastPaid": "112,50",
+            "Highest": "112,50",
+            "Lowest": "107,50",
+            "Volume": "1 027 237",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Tele2 A",
+            "Pct": "0,46",
+            "Change": "0,40",
+            "Buy": "86,50",
+            "Sell": "87,05",
+            "LastPaid": "87,05",
+            "Highest": "88,35",
+            "Lowest": "85,45",
+            "Volume": "8 257",
+            "Time": "16:57"
+        }, {
+            "Instrument": "Tele2 B",
+            "Pct": "2,04",
+            "Change": "1,60",
+            "Buy": "79,90",
+            "Sell": "79,95",
+            "LastPaid": "79,95",
+            "Highest": "80,00",
+            "Lowest": "79,00",
+            "Volume": "2 375 560",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Telia Company",
+            "Pct": "1,91",
+            "Change": "0,72",
+            "Buy": "38,36",
+            "Sell": "38,38",
+            "LastPaid": "38,38",
+            "Highest": "38,50",
+            "Lowest": "37,97",
+            "Volume": "8 158 143",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Tieto",
+            "Pct": "1,39",
+            "Change": "3,00",
+            "Buy": "218,40",
+            "Sell": "219,10",
+            "LastPaid": "219,40",
+            "Highest": "219,40",
+            "Lowest": "217,60",
+            "Volume": "979",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Trelleborg B",
+            "Pct": "0,86",
+            "Change": "1,30",
+            "Buy": "153,00",
+            "Sell": "153,10",
+            "LastPaid": "153,10",
+            "Highest": "153,80",
+            "Lowest": "152,30",
+            "Volume": "199 677",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Unibet Group",
+            "Pct": "0,86",
+            "Change": "0,80",
+            "Buy": "94,05",
+            "Sell": "94,20",
+            "LastPaid": "94,15",
+            "Highest": "94,70",
+            "Lowest": "93,20",
+            "Volume": "345 844",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Volvo A",
+            "Pct": "0,33",
+            "Change": "0,30",
+            "Buy": "90,65",
+            "Sell": "90,70",
+            "LastPaid": "90,65",
+            "Highest": "91,05",
+            "Lowest": "88,35",
+            "Volume": "216 880",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Volvo B",
+            "Pct": "0,22",
+            "Change": "0,20",
+            "Buy": "90,70",
+            "Sell": "90,75",
+            "LastPaid": "90,70",
+            "Highest": "91,15",
+            "Lowest": "88,30",
+            "Volume": "8 779 541",
+            "Time": "17:00"
+        }, {
+            "Instrument": "Wallenstam B",
+            "Pct": "0,73",
+            "Change": "0,50",
+            "Buy": "68,65",
+            "Sell": "68,70",
+            "LastPaid": "68,65",
+            "Highest": "68,90",
+            "Lowest": "68,00",
+            "Volume": "150 428",
+            "Time": "16:59"
+        }, {
+            "Instrument": "Wihlborgs Fastigheter",
+            "Pct": "0,93",
+            "Change": "1,50",
+            "Buy": "163,40",
+            "Sell": "163,60",
+            "LastPaid": "163,50",
+            "Highest": "163,60",
+            "Lowest": "162,00",
+            "Volume": "58 064",
+            "Time": "16:5"
+        }];
+        var sortOrderStates = {};
 
-    function renderStockList(list) {
-        var element = document.querySelector('stocklist');
-        element.innerHTML = '';
-        var t = document.createElement('table');
-        var thNames = Object.keys(list[0]);
-        var tr = document.createElement('tr');
-        thNames.forEach(function(thName, idx, thList) {
-            var th = document.createElement('th');
-            th.onclick = function() {
-                if (sortOrderStates[thName] === undefined) {
-                    sortOrderStates[thName] = true;
-                }
-                console.log('Sortera på ', thName, 'Order: ', sortOrderStates[thName]);
-                var ascSortedList = getSortedList(stockList, thName, sortOrderStates[thName]);
-                renderStockList(ascSortedList);
-
-                sortOrderStates[thName] = !sortOrderStates[thName];
-            };
-            th.innerHTML = thName;
-            tr.appendChild(th);
-        });
-        t.appendChild(tr);
-
-        list.forEach(function(instrument, idx, li) {
+        function renderStockList(list, markColumn) {
+            var element = document.querySelector('stocklist');
+            element.innerHTML = '';
+            var t = document.createElement('table');
+            var thNames = Object.keys(list[0]);
             var tr = document.createElement('tr');
-            tr.appendChild(getTd(instrument, 'Instrument'));
-            tr.appendChild(getTd(instrument, 'Pct'));
-            tr.appendChild(getTd(instrument, 'Change'));
-            tr.appendChild(getTd(instrument, 'Buy'));
-            tr.appendChild(getTd(instrument, 'Sell'));
-            tr.appendChild(getTd(instrument, 'LastPaid'));
-            tr.appendChild(getTd(instrument, 'Highest'));
-            tr.appendChild(getTd(instrument, 'Lowest'));
-            tr.appendChild(getTd(instrument, 'Volume'));
-            tr.appendChild(getTd(instrument, 'Time'));
+            thNames.forEach(function(thName, idx, thList) {
+                var th = document.createElement('th');
+                if (markColumn) {
+                    if (markColumn === thName) {
+                        th.classList.add('active');
+                    }
+                    if (markColumn === (thName + ':desc')) {
+                        th.classList.add('active');
+                        th.classList.add('desc');
+                    }
+                }
+                th.onclick = function(e) {
+                    if (sortOrderStates[thName] === undefined) {
+                        sortOrderStates[thName] = true;
+                    }
+                    console.log('Sortera på ', thName, 'Order: ', sortOrderStates[thName]);
+                    var ascSortedList = getSortedList(stockList, thName, sortOrderStates[thName]);
+                    var clickedColumn = !sortOrderStates[thName] ? thName + ':desc' : thName;
+                    renderStockList(ascSortedList, clickedColumn);
+                    sortOrderStates[thName] = !sortOrderStates[thName];
+                };
+                th.innerHTML = thName;
+                tr.appendChild(th);
+            });
             t.appendChild(tr);
-        });
-        element.appendChild(t);
-    }
 
-    function getTd(obj, propertyName) {
-        var td = document.createElement('td');
-        td.classList.add('js_' + propertyName);
-        td.innerHTML = obj[propertyName];
-        return td;
-    }
-
-    function getSortedList(list, columnName, sortAsc) {
-        if (sortAsc === undefined) {
-            sortAsc = true;
-        }
-        if (columnName === 'Instrument') {
-            return list.sort(function(a, b) {
-                return sortAsc ? compareAlphaAsc(columnName, a, b) : compareAlphaDesc(columnName, a, b)
+            list.forEach(function(instrument, idx, li) {
+                var tr = document.createElement('tr');
+                tr.appendChild(getTd(instrument, 'Instrument'));
+                tr.appendChild(getTd(instrument, 'Pct'));
+                tr.appendChild(getTd(instrument, 'Change'));
+                tr.appendChild(getTd(instrument, 'Buy'));
+                tr.appendChild(getTd(instrument, 'Sell'));
+                tr.appendChild(getTd(instrument, 'LastPaid'));
+                tr.appendChild(getTd(instrument, 'Highest'));
+                tr.appendChild(getTd(instrument, 'Lowest'));
+                tr.appendChild(getTd(instrument, 'Volume'));
+                tr.appendChild(getTd(instrument, 'Time'));
+                t.appendChild(tr);
             });
-        }else if (columnName !== 'Time') {
-            return list.sort(function(a, b) {
-                return sortAsc ? compareAsc(columnName, a, b) : compareDesc(columnName, a, b)
-            });
-        } else {
-            throw "Not supported!";
+            element.appendChild(t);
         }
-    }
 
-    function compareAsc(columnName, a, b) {
-        var aParsed = parseFloat(a[columnName].replace(',','.'));
-        var bParsed = parseFloat(b[columnName].replace(',','.'));
-        if (aParsed < bParsed) return -1;
-        if (aParsed > bParsed) return 1;
-        return 0;
-    }
-    function compareDesc(columnName, a, b) {
-        var aParsed = parseFloat(a[columnName].replace(',','.'));
-        var bParsed = parseFloat(b[columnName].replace(',','.'));
-        if (aParsed < bParsed) return 1;
-        if (aParsed > bParsed) return -1;
-        return 0;
-    }
+        function getTd(obj, propertyName) {
+            var td = document.createElement('td');
+            td.classList.add('js_' + propertyName);
+            td.innerHTML = obj[propertyName];
+            return td;
+        }
 
-    function compareAlphaAsc(columnName, a, b) {
-        if (a[columnName] < b[columnName]) return -1;
-        if (a[columnName] > b[columnName]) return 1;
-        return 0;
-    }
+        function getSortedList(list, columnName, sortAsc) {
+            if (sortAsc === undefined) {
+                sortAsc = true;
+            }
+            if (columnName === 'Instrument') {
+                return list.sort(function(a, b) {
+                    return sortAsc ? compareAlphaAsc(columnName, a, b) : compareAlphaDesc(columnName, a, b)
+                });
+            } else if (columnName !== 'Time') {
+                return list.sort(function(a, b) {
+                    return sortAsc ? compareAsc(columnName, a, b) : compareDesc(columnName, a, b)
+                });
+            } else {
+                throw "Not supported!";
+            }
+        }
 
-    function compareAlphaDesc(columnName, a, b) {
-        if (a[columnName] < b[columnName]) return 1;
-        if (a[columnName] > b[columnName]) return -1;
-        return 0;
-    }
+        function compareAsc(columnName, a, b) {
+            var aParsed = parseFloat(a[columnName].replace(',', '.'));
+            var bParsed = parseFloat(b[columnName].replace(',', '.'));
+            if (aParsed < bParsed) return -1;
+            if (aParsed > bParsed) return 1;
+            return 0;
+        }
 
-    //******************************************************************
-    renderStockList(stockList);
+        function compareDesc(columnName, a, b) {
+            var aParsed = parseFloat(a[columnName].replace(',', '.'));
+            var bParsed = parseFloat(b[columnName].replace(',', '.'));
+            if (aParsed < bParsed) return 1;
+            if (aParsed > bParsed) return -1;
+            return 0;
+        }
 
-    // setTimeout(function() {
-    //     var descSortedList = getSortedList(stockList, 'Instrument', false);
-    //     renderStockList(descSortedList);
+        function compareAlphaAsc(columnName, a, b) {
+            if (a[columnName] < b[columnName]) return -1;
+            if (a[columnName] > b[columnName]) return 1;
+            return 0;
+        }
 
-    //     setTimeout(function() {
-    //         var ascSortedList = getSortedList(stockList, 'Instrument');
-    //         renderStockList(ascSortedList);
-    //     }, 4000);
+        function compareAlphaDesc(columnName, a, b) {
+            if (a[columnName] < b[columnName]) return 1;
+            if (a[columnName] > b[columnName]) return -1;
+            return 0;
+        }
 
-    // }, 4000);
+        //******************************************************************
+        renderStockList(stockList);
+
+        // setTimeout(function() {
+        //     var descSortedList = getSortedList(stockList, 'Instrument', false);
+        //     renderStockList(descSortedList);
+
+        //     setTimeout(function() {
+        //         var ascSortedList = getSortedList(stockList, 'Instrument');
+        //         renderStockList(ascSortedList);
+        //     }, 4000);
+
+        // }, 4000);
 
 
     })();
