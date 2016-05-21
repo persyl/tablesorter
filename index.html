@@ -1288,16 +1288,16 @@
         }
 
         function compareAsc(columnName, a, b) {
-            var aParsed = parseFloat(a[columnName].replace(',', '.'));
-            var bParsed = parseFloat(b[columnName].replace(',', '.'));
+            var aParsed = parseFloat(a[columnName].replace(',', '.')) || 0;
+            var bParsed = parseFloat(b[columnName].replace(',', '.')) || 0;
             if (aParsed < bParsed) return -1;
             if (aParsed > bParsed) return 1;
             return 0;
         }
 
         function compareDesc(columnName, a, b) {
-            var aParsed = parseFloat(a[columnName].replace(',', '.'));
-            var bParsed = parseFloat(b[columnName].replace(',', '.'));
+            var aParsed = parseFloat(a[columnName].replace(',', '.')) || 0;
+            var bParsed = parseFloat(b[columnName].replace(',', '.')) || 0;
             if (aParsed < bParsed) return 1;
             if (aParsed > bParsed) return -1;
             return 0;
